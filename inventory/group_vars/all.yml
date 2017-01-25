@@ -1,0 +1,6 @@
+# If you have an apt-cacher-ng proxy, set to true
+enable_apt_cacher_ng_proxy: false
+
+# and configure to match yours
+apt_cacher_ng_proxy_address: 10.0.1.9
+apt_cacher_ng_proxy_port: 3142
