@@ -11,5 +11,8 @@ galaxy_info:
     - name: Debian
       versions:
       - all
+  categories:
+    - packaging
+    - system
   galaxy_tags:
     - system

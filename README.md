@@ -14,7 +14,8 @@ Ansible role for raspberry pi deployment and configuration
 Custom deployment
 
 ```
-ansible-playbook -i inventory/inventory.cfg configure-playbook.yaml
+ansible-playbook -i inventory/inventory.cfg -v  -e "enable_apt_cacher_ng_proxy=true" \
+	configure-playbook.yaml
 ```
 
 

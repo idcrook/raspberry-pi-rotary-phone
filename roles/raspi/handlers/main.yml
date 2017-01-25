@@ -1,5 +1,1 @@
 ---
-- name: apt-cacher-ng | refreshing apt from cache server
-  apt:
-    update_cache: yes
-  when: apt_caching_configured.changed

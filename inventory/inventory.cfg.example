@@ -1,0 +1,13 @@
+# -*- conf-space -*-
+
+# list nodes here that you only want to log into typically over network, and
+# never using the GUI
+[raspberrypi-headless]
+raspberrypi.local	ip=10.0.1.2
+
+# list nodes here that you to log into using GUI
+[raspberrypi-gui]
+
+[raspberrypi-nodes:children]
+raspberrypi-headless
+raspberrypi-gui

@@ -1,20 +1,26 @@
 
 ---
-- name: apt-cacher-ng | configuring apt caching (Client)
+- name: apt-cacher-ng | configuring apt caching proxy
   template:
     src: 02proxy.j2
     dest: /etc/apt/apt.conf.d/02proxy
     owner: root
     group: root
     mode: 0644
-  register: apt_caching_configured
-  when: enable_apt_cacher_ng_proxy is defined and enable_apt_cacher_ng_proxy
+  register: apt_conf_configured
+  when: install_apt_cacher_ng_proxy is defined and enable_apt_cacher_ng_proxy is defined and install_apt_cacher_ng_proxy
 
-- name: apt-cacher-ng | removing apt caching (Client)
+- name: apt-cacher-ng | removing apt caching proxy
   file:
     path: "{{ item }}"
     state: absent
-  register: apt_caching_configured
+  register: apt_conf_configured
   with_items:
     - /etc/apt/apt.conf.d/02proxy
-  when: (enable_apt_cacher_ng_proxy is defined and not enable_apt_cacher_ng_proxy) or enable_apt_cacher_ng_proxy is not defined
+  when: (install_apt_cacher_ng_proxy is defined and not install_apt_cacher_ng_proxy) or install_apt_cacher_ng_proxy is not defined
+
+
+- name: Apt | update cache
+  apt:
+    update_cache: yes
+  when: apt_conf_configured.changed

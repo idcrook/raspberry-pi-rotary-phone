@@ -1,3 +1,6 @@
+# app-cacher-ng related
+install_apt_cacher_ng_proxy: true
+
 # If you have an apt-cacher-ng proxy, set to true
 enable_apt_cacher_ng_proxy: false
 

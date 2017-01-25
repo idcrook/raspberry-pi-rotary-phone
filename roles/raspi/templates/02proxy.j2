@@ -1,2 +1,2 @@
-{% if use_apt_cacher_ng_proxy %}{% else %}#{% endif %}Acquire::http { proxy "http://{{ apt_cacher_ng_proxy_address }}:{{ apt_cacher_ng_proxy_port }}"; };
-{% if use_apt_cacher_ng_proxy %}{% else %}#{% endif %}Acquire::https::proxy "DIRECT";
+{% if enable_apt_cacher_ng_proxy %}{% else %}#{% endif %}Acquire::http { proxy "http://{{ apt_cacher_ng_proxy_address }}:{{ apt_cacher_ng_proxy_port }}"; };
+{% if enable_apt_cacher_ng_proxy %}{% else %}#{% endif %}Acquire::https::proxy "DIRECT";
