@@ -16,6 +16,3 @@
     insertbefore: "^exit"
     state: present
   with_items: "{{ raspberry_pi_rc_local_options }}"
-
-- include: apt-cacher-ng_client.yml
-  when: apt_cacher_ng_proxy_address is defined

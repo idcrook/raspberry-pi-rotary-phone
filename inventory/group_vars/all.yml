@@ -32,4 +32,4 @@ dbs_ntp_pkg: "ntp"
 
 dbs_apt_default_host: "mirrordirector.raspbian.org"
 #dbs_apt_components: "main contrib non-free rpi"
-dbs_apt_components: "main contrib non-free rpi ui"
+dbs_apt_components: "main contrib non-free rpi"

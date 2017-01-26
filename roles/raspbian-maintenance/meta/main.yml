@@ -3,7 +3,7 @@ dependencies: []
 
 galaxy_info:
   author: idcrook
-  description: Configures a Raspberry Pi running Raspbian.
+  description: Configures and maintains Raspberry Pi running Raspbian.
   company: "Small Gesture LLC"
   license: "MIT"
   min_ansible_version: 1.9

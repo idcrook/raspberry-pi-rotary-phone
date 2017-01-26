@@ -5,7 +5,9 @@
     src=etc/apt/apt.conf.d/90noextrapackages
     dest=/etc/apt/apt.conf.d/90noextrapackages
 
-#FIXME: Add apt-cacher-ng support
+- name: INCLUDE | apt-cacher-ng support
+  include: apt-cacher-ng_client.yml
+  when: apt_cacher_ng_proxy_address is defined
 
 # We MUST update cache... Ansible auto install python-apt
 - name: APT | Update

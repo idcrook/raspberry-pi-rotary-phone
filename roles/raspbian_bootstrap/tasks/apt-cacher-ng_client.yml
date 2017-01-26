@@ -2,7 +2,7 @@
 ---
 - name: apt-cacher-ng | configuring apt caching proxy
   template:
-    src: 02proxy.j2
+    src: etc/apt/apt.conf.d/02proxy.j2
     dest: /etc/apt/apt.conf.d/02proxy
     owner: root
     group: root
