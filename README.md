@@ -24,7 +24,7 @@ rpi2	ansible_host=10.0.1.52
 
 You will need the IP address that get assigned to your Pi when it is booted up. Typically this is assigned by DHCP server on your network. You Pi _may_ also be addressable at a Zeroconf-assigned address like `raspberrypi.local`, since this is how a fresh Raspbian boots.
 
-RECOMMENDED: Use a router feature, sometimes called DHCP reservations or similar, to assign a DHCP IP "statically" to your Pi(s), especially if you have more than one Pi.
+RECOMMENDED: Use a router feature, sometimes called DHCP reservations or similar, to assign a DHCP IP "statically" to your Pi(s), especially if you have more than one Pi. Ansible playbook will work with as many Pi's as you have available.
 
 
 ## SSH keys for password-less  ###
