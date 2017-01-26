@@ -1,0 +1,10 @@
+- hosts: raspberrypi-nodes
+  become: true
+
+  roles:
+    - raspbian_bootstrap
+
+  vars_prompt:
+    - name: "password"
+      prompt: "Enter new password for user pi"
+      private: yes
