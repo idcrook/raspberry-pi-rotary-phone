@@ -1,0 +1,56 @@
+---
+
+- debug: var=ansible_user_id
+  become: no
+  become_user: "{{ nvm_versions.nvm_user }}"
+- debug: var=nvm_versions.nvm_user
+  become: yes
+  become_user: "{{ nvm_versions.nvm_user }}"
+
+# FIXME: - name: nvm | Check if nvm, node and npm already installed
+
+- name: nvm | Install nvm
+  shell: >
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/{{ nvm_versions.nvm }}/install.sh | sh
+    creates=/home/{{ nvm_versions.nvm_user }}/.nvm/nvm.sh
+  become: yes
+  become_user: "{{ nvm_versions.nvm_user }}"
+
+- name: nvm | Install node and set version
+  shell: >
+    /bin/bash -c "source ~/.nvm/nvm.sh && nvm install {{ nvm_versions.nvm_node }} && nvm alias default {{ nvm_versions.nvm_node }}"
+    creates=/home/{{ nvm_versions.nvm_user }}/.nvm/alias
+  become: yes
+  become_user: "{{ nvm_versions.nvm_user }}"
+  register: output
+  changed_when: "'already installed.' not in output.stderr"
+
+- name: nvm | Determine node install location
+  shell: >
+    /bin/bash -c "source ~/.nvm/nvm.sh && nvm which {{ nvm_versions.nvm_node }}"
+  become: yes
+  become_user: "{{ nvm_versions.nvm_user }}"
+  register: nvm_which
+
+- name: nvm | Print nvm which "{{ nvm_versions.nvm_node }}"
+  debug: var=nvm_which.stdout
+
+- name: nvm | Determine node install location
+  shell: >
+    /bin/bash -c "source ~/.nvm/nvm.sh && which npm"
+  become: yes
+  become_user: "{{ nvm_versions.nvm_user }}"
+  register: npm_which
+
+- name: nvm | Print npm which
+  debug: var=npm_which.stdout
+
+#   creates=/usr/local/bin/node
+- name: nvm | Link node in /usr/local
+  file: src="{{ nvm_which.stdout_lines[0] }}" dest=/usr/local/bin/node state=link
+
+- name: nvm | Link npm in /usr/local
+  file: src="{{ npm_which.stdout_lines[0] }}" dest=/usr/local/bin/npm state=link
+
+# FIXME:
+# fixup bashrc (comment out the nvm sourcing)

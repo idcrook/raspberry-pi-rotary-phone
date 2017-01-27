@@ -2,7 +2,7 @@
 raspberry_pi_boot_config_options:
   # Set the GPU memory split value.
   - regexp: "^#?gpu_mem"
-    line: "gpu_mem=16"
+    line: "gpu_mem={{ 16 }}"
   # Enable 1200ma USB current on newer model Pis.
   - regexp: "^#?max_usb_current"
     line: "max_usb_current=1"

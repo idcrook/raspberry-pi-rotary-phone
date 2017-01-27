@@ -1,0 +1,86 @@
+---
+
+########################################################################
+# raspi-config
+########################################################################
+
+# Find your wifi country code
+# cat /usr/share/zoneinfo/iso3166.tab | tail -n +26
+rpicfg_wifi_country: US
+
+# FIXME: Allow separate config of headless vs. GUI
+rpicfg_memory_split: 16
+
+# Enable VNC server.  '1' for disabled or '0' for enabled
+rpicfg_disable_vnc_server: 1
+
+# Boot behaviour
+#  B1 - Console - Text console, requiring user to login
+#  B2 - Console Autologin" "Text console, automatically logged in as 'pi' user
+#  B3 - Desktop" "Desktop GUI, requiring user to login"
+#  B4 - Desktop Autologin" "Desktop GUI, automatically logged in as 'pi' user"
+#  Set to one of {B1|B2|B3|B4}
+rpicfg_boot_behaviour: B1
+
+########################################################################
+
+# WIFI
+
+wifi_wpa_supplicant:
+  ssid: "Wifi SSID"
+  password: PASSWORD
+# FIXME: Add/use ansible secret
+
+# PACKAGES
+always_update_cache: false
+
+install_extra_packages: true
+
+install_developer_tools: true
+install_developer_packages: true
+install_pip_packages: true
+install_nvm: true
+install_npm_packages: true
+install_npm_iot_cloud_packages: false
+install_git_repositories: false
+
+extra_packages_to_install:
+  - dselect
+  - screen
+  - git
+  - git-core
+  - htop
+
+developer_packages_to_install:
+  - python-pip
+  - ruby-dev
+  - python-dev
+  - curl
+  - git
+  - automake
+  - build-essential
+  - libssl-dev
+  - emacs
+
+pip_packages_to_install: [ awscli ]
+
+nvm_versions:
+  nvm: v0.33.0
+  nvm_node: stable
+  node_version: v7.4.0
+  nvm_user: '{{ ansible_user }}'
+
+npm_packages_to_install: [ mqtt, crypto-js, minimist, websocket-stream ]
+
+npm_iot_cloud_packages_to_install: [ aws-iot-device-sdk ]
+
+git_repositories_to_clone:
+  - name: Iot Demo
+    repo: https://github.com/idcrook/rpi-iot-demo-2017.git
+    dest: /home/pi/iot-demo
+  - name: RGB slider
+    repo: https://github.com/idcrook/rgb-slider.git
+    dest: /home/pi/rgb-slider
+  - name: RGB slider
+    repo: https://github.com/sarfata/pi-blaster.git
+    dest: /home/pi/pi-blaster

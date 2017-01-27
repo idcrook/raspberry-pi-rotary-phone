@@ -1,0 +1,18 @@
+---
+
+- name: raspi-config | Update hostname
+  command: raspi-config nonint do_hostname {{ inventory_hostname }}
+  register: rpicfg_do_hostname
+
+- name: raspi-config | Update memory split
+  command: raspi-config nonint do_memory_split {{ rpicfg_memory_split }}
+  when: rpicfg_memory_split is defined
+
+- name: raspi-config | VNC server
+  command: raspi-config nonint do_vnc {{ rpicfg_disable_vnc_server }}
+  when: rpicfg_disable_vnc_server is defined
+
+- name: raspi-config | Boot Behaviour
+  command: raspi-config nonint do_boot_behaviour {{ rpicfg_boot_behaviour }}
+  when: rpicfg_boot_behaviour is defined
+  register: rpicfg_do_boot_behaviour

@@ -1,0 +1,36 @@
+---
+- name: Developer | Update APT package cache
+  action: apt update_cache="{{ always_update_cache }}" cache_valid_time=3600
+
+# Handy way to montior progress on remote machine:
+#   sudo less  /var/log/apt/term.log
+- name: Developer | Install developer packages
+  apt: pkg={{ item }} state=installed update_cache={{ always_update_cache }}
+  with_items: "{{ developer_packages_to_install }}"
+  when: install_developer_packages is defined and install_developer_packages
+
+- name: Developer | Install python modules
+  pip: name={{ item }}
+  with_items: "{{ pip_packages_to_install }}"
+  when: install_pip_packages
+
+- name: Developer | Install nvm
+  include: nvm.yml
+  when: (install_npm_packages or install_npm_iot_cloud_packages or install_nvm)
+
+# - name: Developer | Install node.js packages
+#   npm: pkg={{ item }} global=yes
+#   with_items: "{{ npm_packages_to_install }}"
+#   when: install_npm_packages
+
+# - name: Developer | Install Cloud node.js packages
+#   npm: pkg={{ item }} global=yes
+#   with_items: "{{ npm_iot_cloud_packages_to_install }}"
+#   when: install_npm_iot_cloud_packages
+
+- name: Developer | Install git packages
+  git: repo={{ item.repo }} dest={{ item.dest }}
+  with_items: "{{ git_repositories_to_clone }}"
+  become: yes
+  become_user: "{{ ansible_user }}"
+  when: install_git_repositories

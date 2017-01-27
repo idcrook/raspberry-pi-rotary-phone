@@ -68,6 +68,20 @@ ansible-playbook -i inventory/inventory.cfg --ask-pass \
 
 Additional config and maintenance tasks
 
+```
+ansible-playbook -i inventory/inventory.cfg \
+  -e "enable_apt_cacher_ng_proxy=true"  \
+  maintenance-playbook.yaml
+```
+
+```
+ansible-playbook \
+  -e "enable_apt_cacher_ng_proxy=true"  \
+  -e "install_git_repositories=true"  \
+  maintenance-playbook.yaml
+```
+
+
 # Credits #
 
 
@@ -81,6 +95,8 @@ Borrowed parts from
   - `roles/raspbian_bootstrap` and its subdirs under GPLv2 LICENSE
 
 # TODO #
+
+Add ansible tags such as `maintenance`.
 
 - System config
 - [ ] Assert systemd (systemctl, etc. assume Raspbian jessie)
@@ -96,8 +112,8 @@ Borrowed parts from
    - [ ] IoT related (GPIO, node pkgs, python pkgs, IoT/cloud frameworks)
 - `raspi-config`
   - [ ] `--expand-rootfs` and reboot
-  - [ ] `noint do_hostname`
-  - [ ] `noint do_boot_behavior {B1|B2|B3|B4}`
+  - [ ] `nonint do_hostname`
+  - [ ] `nonint do_boot_behavior {B1|B2|B3|B4}`
   - [ ] Others
 	- [ ] overscan
 	- [ ] memory split

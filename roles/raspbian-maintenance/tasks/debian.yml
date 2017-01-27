@@ -19,3 +19,23 @@
 
 - include: apt-cacher-ng_client.yml
   when: apt_cacher_ng_proxy_address is defined
+
+- name: raspi-config | Do some configuration
+  include: raspi-config.yml
+
+# Will likely cause a reboot
+- name: Package maintenance | apt package maintenance
+  include: apt-maintenance.yml
+
+- name: Developer tasks
+  include: developer.yml
+  when: install_developer_tools is defined and install_developer_tools
+
+# debug osx_say with something like
+#   ansible all -i "localhost," -c local -m osx_say -a 'msg="Hello world" voice="Alex"'
+# /usr/bin/say -v Alex hostname is all done
+- osx_say:
+    msg: '{{ inventory_hostname }} is all done'
+    voice: Alex
+  delegate_to: localhost
+  become: no
