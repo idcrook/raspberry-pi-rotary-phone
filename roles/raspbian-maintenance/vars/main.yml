@@ -53,6 +53,8 @@ extra_packages_to_install:
   - htop
 
 developer_packages_to_install:
+  - sysbench
+  - wiringpi
   - python-pip
   - ruby-dev
   - python-dev
