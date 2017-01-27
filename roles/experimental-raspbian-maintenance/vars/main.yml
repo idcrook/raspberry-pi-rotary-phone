@@ -1,0 +1,10 @@
+---
+#export NVM_DIR="/home/pi/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+raspberry_pi_user_bashrc_nvm_sourcing:
+  # Comment out NVM_DIR
+  - regexp: '^#?export NVM_DIR=(.*)$'
+    line: '#export NVM_DIR=\1'
+  # Comment out nvm.sh sourcing
+  - regexp: '^#?\s*\[ -s "\$NVM_DIR/nvm.sh" \](.*)$'
+    line: '#[ -s "$NVM_DIR/nvm.sh" ]\1'

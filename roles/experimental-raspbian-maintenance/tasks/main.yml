@@ -1,0 +1,10 @@
+---
+- name: nvm | Comment out nvm.sh sourcing
+  lineinfile:
+    dest: ~/.bashrc
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    backrefs: yes
+  with_items: "{{ raspberry_pi_user_bashrc_nvm_sourcing }}"
+  become: no
