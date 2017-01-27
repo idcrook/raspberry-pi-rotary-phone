@@ -5,11 +5,11 @@ Ansible roles for Raspberry Pi deployment, configuration, and maintenance
 
 ## STATUS
 
-A Work-In-Progress
+Works amazingly well! In use for normalizing Raspbian-flavored Pis on Home LAN.
 
-Have successfully normalized a Pi and did  developer configuration
+Developer configuration role (currently found in the _maintenance_ playbook/role) is very useful for configuring many Pi-s the same-- for example, if you need many Pi-s configured identically with software, git clones, etc. for a demo.
 
-See TODO / DONE section at end for tasks in the roles and features desired, planned or completed.
+For further status, see TODO / DONE sections below for features desired, planned or completed.
 
 
 # Getting started #
@@ -21,11 +21,11 @@ See TODO / DONE section at end for tasks in the roles and features desired, plan
 
 So you've flashed a raspbian-compatible image to an SD card and installed in your Raspberry Pi(s)?
 
-Power it up with Ethernet cable attached. Your ansible host (where you _run_ ansible) needs to be able to access the network the Pi is on in order to SSH to it.
+Power it up with Ethernet cable attached and connected to your LAN. Your ansible host (where you _run_ ansible) needs to be able to access the network the Pi is on in order to SSH to it.
 
 ## Customize inventory ##
 
-Copy template file to your own that will be editted.
+Copy example inventory file to your own (that will be edited).
 
 ```
 cp inventory/inventory.cfg.example inventory/inventory.cfg
@@ -37,15 +37,23 @@ In the inventory file, the `ansible_host` IP must be SSH-able from the computer 
 rpi2	ansible_host=10.0.1.52
 ```
 
-You will need the IP address that get assigned to your Pi when it is booted up. Typically this is assigned by DHCP server on your network. Your Raspberry Pi _may_ also be addressable at a Zeroconf-assigned address like `raspberrypi.local`, since this is how a fresh Raspbian boots these days.
+You will need the IP address that get assigned to your Pi when it is booted up. Typically this is assigned by DHCP server on your network. Your Raspberry Pi _may also_ be addressable at a Zeroconf-assigned address like `raspberrypi.local`, since this is how a fresh Raspbian boots these days. However, a non-changing IP address for your Pi-s is a basic requirement for least trouble.
 
-RECOMMENDED: On your network, use a router feature, sometimes called DHCP reservations or similar, to assign a DHCP IP "statically" to your Pi(s), especially if you have more than one Pi. The ansible playbooks will work with as many Pi's as you have available, but if the IPs assigned are constantly changing, then there are goings to be problems.
+**RECOMMENDED**: On your network, use a router feature, sometimes called DHCP reservations or similar, to assign a DHCP IP "statically" to your Pi(s), especially if you have more than one Pi. These work by associating an Ethernet MAC address with an IP assignemtn.
 
+The ansible playbooks will work with as many Pi's as you have available, but if the IPs assigned are constantly changing, then there are going to be problems.
 
+Something else to consider: set up **`~/.ssh/config`** to have the same matching hostnames and IP address as you used in your inventory file. Here's a matching example from my `~/.ssh/config` file:
+
+``` ini
+Host rpi2
+  HostName 10.0.1.52
+  User pi
+```
 
 ## SSH keys for password-less  ###
 
-Update config in `bootstrap-playbook.yaml` if necessary, after ensuring as SSH identity is available and/or copying identity to `keys/`. This is used to configure password-less SSH access.
+Update SSH key config in `bootstrap-playbook.yaml` if necessary, after ensuring as SSH identity is available and/or copying identity to **`keys/`**. The SSH keys are used to configure password-less SSH access.
 
 **FILES**
 
@@ -59,7 +67,7 @@ dbs_ssh_pubkey: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
 ## Customize other config variables  ###
 
-Many ansible control variables should be edited to reflect your envrironment and can be found in:
+Many ansible control variables for the **`raspbian_bootstrap`** role should be edited to reflect your environment. The ansible files for these variable can be found at:
 
 **FILES**
 
@@ -68,7 +76,7 @@ Many ansible control variables should be edited to reflect your envrironment and
 
 ## Deploy ##
 
-So you have your inventory up-to-date and have pointed to an SSH identity and customized and localized control variables? Run the playbook!
+So you have your inventory up-to-date and have pointed to an SSH identity and customized and localized all the config variables? Run the playbook!
 
 ```
 ansible-playbook -i inventory/inventory.cfg --ask-pass \
@@ -82,8 +90,8 @@ SSH password:
 Enter new password for user pi:
 ```
 
-The first is the SSH password for the `pi` user. **Default**: `raspberry`
-The second is for assigning a _new_ login password for `pi` user.
+ 1. The first is the SSH password for the `pi` user. **Default**: `raspberry`
+ 1. The second is for assigning a _new_ login password for `pi` user.
 
 If you'd like, you can explicitly set ansible variables on the command line too, for example:
 
@@ -97,7 +105,7 @@ ansible-playbook -i inventory/inventory.cfg --ask-pass \
 
 Once the bootstrap playbook is run successfully for a target host, you shouldn't need to run it again in the future. (unless you edit the ansible files, of course!)
 
-There is another playbook for additional raspberry pi configuration and developer setup. It is designated to run perform the maintenance role.
+There is another playbook for additional raspberry pi configuration. It is designated to perform a maintenance role, but also includes developer setup. It can even install Git repositories and NPM modules.
 
 **FILES**
 
@@ -119,6 +127,7 @@ ansible-playbook \
   maintenance-playbook.yaml
 ```
 
+It has been tested successfully to run multiple times. So, if you need to upgrade to latest versions of packages, etc. it is there to help.
 
 # Credits #
 
