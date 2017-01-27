@@ -33,10 +33,11 @@ wifi_wpa_supplicant:
 
 # PACKAGES
 always_update_cache: false
-
 install_extra_packages: true
 
-install_developer_tools: true
+# If you want to install a bunch of developer tools, set this to true
+install_developer_tools: false
+
 install_developer_packages: true
 install_pip_packages: true
 install_nvm: true
