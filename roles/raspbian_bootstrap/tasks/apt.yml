@@ -64,5 +64,3 @@
   with_flattened:
     - "{{ dbs_packages }}"
     - "{{ dbs_distro_packages }}"
-
-# FIXME: do system upgrades

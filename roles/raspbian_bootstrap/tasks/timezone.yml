@@ -1,5 +1,5 @@
 ---
-#FIXME: Use raspi-config?
+
 - name: COPY | Set /etc/localtime to {{ dbs_timezone }}
   copy: >
     src=/usr/share/zoneinfo/{{ dbs_timezone }}

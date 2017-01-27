@@ -1,7 +1,5 @@
 ---
 
-# FIXME: use raspi-config
-
 # # Doc: https://wiki.debian.org/HowTo/ChangeHostname
 # # TODO : notify other services
 

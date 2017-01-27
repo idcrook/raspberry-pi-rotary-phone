@@ -9,6 +9,14 @@
 
 # FIXME: - name: nvm | Check if nvm, node and npm already installed
 
+# - name: Download nvm installer script
+#   get_url: url="{{ https://raw.githubusercontent.com/creationix/nvm/{{ nvm_versions.nvm }}/install.sh }}" dest=/tmp/nvm-installer.sh
+
+# - name: Execute the nvm installer script
+#   script: /tmp/nvm-installer.sh
+#   become: yes
+#   become_user: "{{ nvm_versions.nvm_user }}"
+
 - name: nvm | Install nvm
   shell: >
     curl -o- https://raw.githubusercontent.com/creationix/nvm/{{ nvm_versions.nvm }}/install.sh | sh
@@ -16,10 +24,11 @@
   become: yes
   become_user: "{{ nvm_versions.nvm_user }}"
 
+
+# creates=/home/{{ nvm_versions.nvm_user }}/.nvm/alias
 - name: nvm | Install node and set version
   shell: >
     /bin/bash -c "source ~/.nvm/nvm.sh && nvm install {{ nvm_versions.nvm_node }} && nvm alias default {{ nvm_versions.nvm_node }}"
-    creates=/home/{{ nvm_versions.nvm_user }}/.nvm/alias
   become: yes
   become_user: "{{ nvm_versions.nvm_user }}"
   register: output
@@ -49,6 +58,7 @@
 - name: nvm | Link node in /usr/local
   file: src="{{ nvm_which.stdout_lines[0] }}" dest=/usr/local/bin/node state=link
 
+#   creates=/usr/local/bin/npm
 - name: nvm | Link npm in /usr/local
   file: src="{{ npm_which.stdout_lines[0] }}" dest=/usr/local/bin/npm state=link
 

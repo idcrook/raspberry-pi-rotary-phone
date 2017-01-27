@@ -1,11 +1,9 @@
 ---
-- name: Developer | Update APT package cache
-  action: apt update_cache="{{ always_update_cache }}" cache_valid_time=3600
 
 # Handy way to montior progress on remote machine:
 #   sudo less  /var/log/apt/term.log
 - name: Developer | Install developer packages
-  apt: pkg={{ item }} state=installed update_cache={{ always_update_cache }}
+  apt: pkg={{ item }} state=installed update_cache={{ always_update_cache }} cache_valid_time=3600
   with_items: "{{ developer_packages_to_install }}"
   when: install_developer_packages is defined and install_developer_packages
 
