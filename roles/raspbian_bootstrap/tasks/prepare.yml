@@ -1,4 +1,9 @@
 ---
 
-- name: FILE | Creates ansible facts.d
+- name: PREPARE | Creates ansible facts.d
   file: path=/etc/ansible/facts.d state=directory
+
+# ASSUME: systemd / jessie
+- name: PREPARE | Stop if non systemd OS type
+  assert:
+    that: ansible_service_mgr == "systemd"

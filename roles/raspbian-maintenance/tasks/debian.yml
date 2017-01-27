@@ -1,4 +1,10 @@
 ---
+
+# ASSUME: systemd / jessie
+- name: Stop if non systemd OS type
+  assert:
+    that: ansible_service_mgr == "systemd"
+
 - name: Configure options in /boot/config.txt.
   lineinfile:
     dest: /boot/config.txt
