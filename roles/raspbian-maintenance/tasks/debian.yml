@@ -29,7 +29,6 @@
 - name: raspi-config | Do some configuration
   include: raspi-config.yml
 
-# Will likely cause a reboot
 - name: Package maintenance | apt package maintenance
   include: apt-maintenance.yml
 

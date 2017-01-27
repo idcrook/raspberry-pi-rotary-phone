@@ -40,6 +40,9 @@ wifi_wpa_supplicant:
 always_update_cache: false
 install_extra_packages: true
 
+# Set to true to reboot
+reboot_after_apt_upgrade: false
+
 # If you want to install a bunch of developer tools, set this to true
 install_developer_tools: false
 

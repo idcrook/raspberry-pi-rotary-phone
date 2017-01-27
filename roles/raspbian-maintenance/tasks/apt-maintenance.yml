@@ -10,12 +10,6 @@
 - name: Package maintenance | Upgrade to latest packages
   action: apt upgrade=safe
 
-# - name: Package maintainance | Reboot
-#   command: sleep 2 && reboot
-#   async: 1
-#   poll: 0
-#   ignore_errors: true
-
-# - name: Package maintenance | Wait for Raspberry PI to come back
-#   local_action: wait_for host={{ ansible_ssh_host }} port=22 state=started delay=10
-#   become: false
+- name: Package maintenance | Reboot Pi
+  include: reboot.yml
+  when: reboot_after_apt_upgrade is defined and reboot_after_apt_upgrade
