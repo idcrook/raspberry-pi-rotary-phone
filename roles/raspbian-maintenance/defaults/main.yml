@@ -2,7 +2,7 @@
 raspberry_pi_boot_config_options:
   # Set the GPU memory split value.
   - regexp: "^#?gpu_mem"
-    line: "gpu_mem={{ 16 }}"
+    line: "gpu_mem={{ rpicfg_memory_split }}"
   # Enable 1200ma USB current on newer model Pis.
   - regexp: "^#?max_usb_current"
     line: "max_usb_current=1"
@@ -11,3 +11,13 @@ raspberry_pi_rc_local_options:
   # Disable HDMI on startup (for power savings).
   - regexp: "^/usr/bin/tvservice"
     line: "/usr/bin/tvservice -o"
+
+#export NVM_DIR="/home/pi/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+raspberry_pi_user_bashrc_nvm_sourcing:
+  # Comment out NVM_DIR
+  - regexp: '^#?export NVM_DIR=(.*)$'
+    line: '#export NVM_DIR=\1'
+  # Comment out nvm.sh sourcing
+  - regexp: '^#?\s*\[ -s "\$NVM_DIR/nvm.sh" \](.*)$'
+    line: '#[ -s "$NVM_DIR/nvm.sh" ]\1'

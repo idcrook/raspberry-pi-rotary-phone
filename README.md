@@ -146,9 +146,8 @@ Borrowed parts from
 Add ansible tags such as `maintenance`.
 
 - System config
-- [ ] Assert systemd (systemctl, etc. assume Raspbian jessie)
 - [ ] wi-fi config
-- [ ] GUI vs. headless
+- [ ] GUI mode support (gpu_mem, etc)
 - Servers
   - [ ] shairport-sync
 - Package management
@@ -159,12 +158,12 @@ Add ansible tags such as `maintenance`.
   - [ ] Others
 	- [ ] overscan
 	- [ ] overclock
-	- [ ] spi, i2c,
   - [ ] Dangerous: ssh, serial
 
 ## DONE ##
 
 - System config
+- [x] Assert systemd (systemctl, etc. assume Raspbian jessie)
   - Update user login information
   - [x] Change password from default
   - [x] groups (serial, e.g.)
@@ -178,6 +177,7 @@ Add ansible tags such as `maintenance`.
 	- [x] memory split
 	- [x] vnc
 	- [x] wifi_country
+	- [x] spi, i2c
 - Servers
   - [x] Install NTP
 - Package management

@@ -22,6 +22,11 @@ rpicfg_disable_vnc_server: 1
 #  Set to one of {B1|B2|B3|B4}
 rpicfg_boot_behaviour: B1
 
+# Enable I2C bus '1' for disabled or '0' for enabled
+rpicfg_disable_i2c: 1
+# Enable SPI bus '1' for disabled or '0' for enabled
+rpicfg_disable_spi: 1
+
 ########################################################################
 
 # WIFI
@@ -84,6 +89,6 @@ git_repositories_to_clone:
   - name: RGB slider
     repo: https://github.com/idcrook/rgb-slider.git
     dest: /home/pi/rgb-slider
-  - name: RGB slider
+  - name: Pi Blaster
     repo: https://github.com/sarfata/pi-blaster.git
     dest: /home/pi/pi-blaster

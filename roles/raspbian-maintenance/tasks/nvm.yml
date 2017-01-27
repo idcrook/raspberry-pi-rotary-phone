@@ -1,36 +1,18 @@
 ---
 
-- debug: var=ansible_user_id
-  become: no
-  become_user: "{{ nvm_versions.nvm_user }}"
-- debug: var=nvm_versions.nvm_user
-  become: yes
-  become_user: "{{ nvm_versions.nvm_user }}"
-
-# FIXME: - name: nvm | Check if nvm, node and npm already installed
-
-# - name: Download nvm installer script
-#   get_url: url="{{ https://raw.githubusercontent.com/creationix/nvm/{{ nvm_versions.nvm }}/install.sh }}" dest=/tmp/nvm-installer.sh
-
-# - name: Execute the nvm installer script
-#   script: /tmp/nvm-installer.sh
-#   become: yes
-#   become_user: "{{ nvm_versions.nvm_user }}"
+# TODO: Check if nvm, node and npm already installed
 
 - name: nvm | Install nvm
   shell: >
     curl -o- https://raw.githubusercontent.com/creationix/nvm/{{ nvm_versions.nvm }}/install.sh | sh
     creates=/home/{{ nvm_versions.nvm_user }}/.nvm/nvm.sh
-  become: yes
-  become_user: "{{ nvm_versions.nvm_user }}"
-
+  become: no
 
 # creates=/home/{{ nvm_versions.nvm_user }}/.nvm/alias
 - name: nvm | Install node and set version
   shell: >
     /bin/bash -c "source ~/.nvm/nvm.sh && nvm install {{ nvm_versions.nvm_node }} && nvm alias default {{ nvm_versions.nvm_node }}"
-  become: yes
-  become_user: "{{ nvm_versions.nvm_user }}"
+  become: no
   register: output
   changed_when: "'already installed.' not in output.stderr"
 
@@ -55,12 +37,19 @@
   debug: var=npm_which.stdout
 
 #   creates=/usr/local/bin/node
-- name: nvm | Link node in /usr/local
+- name: nvm | Symlink node in /usr/local/bin
   file: src="{{ nvm_which.stdout_lines[0] }}" dest=/usr/local/bin/node state=link
 
 #   creates=/usr/local/bin/npm
-- name: nvm | Link npm in /usr/local
+- name: nvm | Symlink npm in /usr/local/bin
   file: src="{{ npm_which.stdout_lines[0] }}" dest=/usr/local/bin/npm state=link
 
-# FIXME:
-# fixup bashrc (comment out the nvm sourcing)
+- name: nvm | Comment out nvm.sh sourcing in .bashrc
+  lineinfile:
+    dest: ~/.bashrc
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    backrefs: yes
+  with_items: "{{ raspberry_pi_user_bashrc_nvm_sourcing }}"
+  become: no
