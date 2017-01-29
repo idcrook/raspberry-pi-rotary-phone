@@ -3,10 +3,11 @@
 - name: PREPARE | Creates ansible facts.d
   file: path=/etc/ansible/facts.d state=directory
 
-# ASSUME: systemd / jessie
-- name: PREPARE | Stop if non systemd OS type
-  assert:
-    that: ansible_service_mgr == "systemd"
+# Broken on ansible 2.2.1.0 for fresh jessie install image
+# # ASSUME: systemd / jessie
+# - name: PREPARE | Stop if non systemd OS type
+#   assert:
+#     that: ansible_service_mgr == "systemd"
 
 - name: Expand filesystem to fill disk
   command: raspi-config --expand-rootfs

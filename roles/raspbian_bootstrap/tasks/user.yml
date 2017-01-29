@@ -8,6 +8,11 @@
     - "{{ dbs_groups }}"
   when: item.state is not defined or item.state == 'present'
 
+# Do this BEFORE changing password!
+- name: AUTHORIZED_KEY | Install SSH public key to pi user
+  authorized_key: user=pi key="{{ dbs_ssh_pubkey }}"
+  when: dbs_ssh_pubkey is defined
+
 - name: USER | Add users to the system
   user: >
     name=pi
@@ -18,10 +23,6 @@
     password={{ password | password_hash('sha512') }}
   register: u
 
-- name: AUTHORIZED_KEY | Install SSH public key to pi user
-  authorized_key: user=pi key="{{ dbs_ssh_pubkey }}"
-  when: dbs_ssh_pubkey is defined
-
 - name: TEMPLATE | Create sudoers file
   template: >
     src=etc/sudoers.d/ansible.j2
@@ -29,4 +30,3 @@
     mode=0440
     validate='visudo -cf %s'
   when: u.changed
-
