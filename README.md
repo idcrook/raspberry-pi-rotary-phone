@@ -14,12 +14,37 @@ For further status, see TODO / DONE sections below for features desired, planned
 
 # Getting started #
 
-**Assumptions**
+## Assumptions
 
  - ansible installed, control machine platform: _macOS_
    - may work on Linux, etc. but haven't tested
+ - Raspbian SD card image flashed onto an SD card
+   - SSH enabled?
 
-So you've flashed a raspbian-compatible image to an SD card and installed in your Raspberry Pi(s)?
+
+## Enable SSH on image
+
+So you've flashed a Raspbian-compatible image to an SD card?
+
+In November 2016, there was a change made to defaults so that SSH server is not enabled by default. This will cause problems with "headless" installs on first-boot.
+
+ https://www.raspberrypi.org/blog/a-security-update-for-raspbian-pixel/
+
+> The boot partition on a Pi should be accessible from any machine with an SD
+> card reader, on Windows, Mac, or Linux. If you want to enable SSH, all you
+> need to do is to put a file called ssh in the /boot/ directory. The contents
+> of the file don’t matter: it can contain any text you like, or even nothing
+> at all.
+
+OK. On macOS, the `/boot` partition will usually get mounted.
+
+``` bash
+touch /Volumes/boot/ssh
+```
+
+Tell macOS to safely Eject. One way to do this is right-click on the "boot" volume in Finder/Desktop and use the `[Eject]` item.
+
+ and installed in your Raspberry Pi(s)?
 
 Power it up with Ethernet cable attached and connected to your LAN. Your ansible host (where you _run_ ansible) needs to be able to access the network the Pi is on in order to SSH to it.
 
