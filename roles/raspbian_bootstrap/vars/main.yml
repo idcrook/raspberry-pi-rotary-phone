@@ -21,8 +21,12 @@ dbs_ntp_hosts:
   - "3.us.pool.ntp.org"
 dbs_ntp_pkg: "ntp"
 
-dbs_apt_default_host: "mirrordirector.raspbian.org"
-dbs_apt_components: "main contrib non-free rpi"
+#dbs_apt_default_host: "mirrordirector.raspbian.org"
+#dbs_apt_default_host: "cosmos.cites.illinois.edu/pub/raspbian"
+#dbs_apt_default_host: "raspbian.mirrors.lucidnetworks.net"
+dbs_apt_default_host: "mirrors.ocf.berkeley.edu/raspbian"
+
+dbs_apt_components: "main contrib non-free firmware rpi"
 
 dbs_packages:
   - sudo
