@@ -64,3 +64,6 @@
   with_flattened:
     - "{{ dbs_packages }}"
     - "{{ dbs_distro_packages }}"
+
+- name: APT | Autoremove packages
+  apt: autoremove=yes
