@@ -19,6 +19,7 @@ dbs_use_systemd: false
 dbs_use_unbound: false
 dbs_use_dotfiles: true
 dbs_uninstall_packages: []
+dbs_expand_filesystem: false
 
 # -------------------------
 # Role setup

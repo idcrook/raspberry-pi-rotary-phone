@@ -7,3 +7,11 @@
 - name: PREPARE | Stop if non systemd OS type
   assert:
     that: ansible_service_mgr == "systemd"
+
+- name: Expand filesystem to fill disk
+  command: raspi-config --expand-rootfs
+  become: yes
+  when: dbs_expand_filesystem is defined and dbs_expand_filesystem
+  notify:
+  - Restart
+  - Wait for restart to finish

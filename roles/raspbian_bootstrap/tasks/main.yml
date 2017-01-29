@@ -18,10 +18,9 @@
 - name: INCLUDE | Configure APT
   include: apt.yml
 
-#Assume DHCP for now
-# - name: INCLUDE | Configure DNS cache
-#   include: unbound.yml
-#   when: dbs_use_unbound
+- name: INCLUDE | Configure DNS cache
+  include: unbound.yml
+  when: dbs_use_unbound
 
 - name: INCLUDE | Set timezone
   include: timezone.yml
