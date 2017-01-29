@@ -72,6 +72,7 @@ developer_packages_to_install:
   - python-dev
   - curl
   - git
+  - autoconf
   - automake
   - build-essential
   - libssl-dev
