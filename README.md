@@ -202,18 +202,18 @@ Add ansible tags such as `maintenance`.
 
 - System config
 - [ ] wi-fi config
-- [ ] GUI mode support (gpu_mem, etc)
+- [ ] GUI mode support vs. "headless"
 - Servers
   - [ ] shairport-sync
 - Package management
    - [ ] k8s, docker
    - [ ] IoT related (GPIO, node pkgs, python pkgs, IoT/cloud frameworks)
 - `raspi-config`
-  - [ ] `--expand-rootfs` and reboot
-  - [ ] Others
-	- [ ] overscan
-	- [ ] overclock
-  - [ ] Dangerous: ssh, serial
+  - Others
+  - [ ] overscan
+  - Dangerous:
+  - [ ] overclock
+  - [ ] serial
 
 ## DONE ##
 
@@ -226,8 +226,11 @@ Add ansible tags such as `maintenance`.
 - [x] Timezone, locale
 - [x] bashrc, emacs, vimrc, etc.
 - `raspi-config`
+  - [x] `--expand-rootfs` and reboot
   - [x] `nonint do_hostname`
   - [x] `nonint do_boot_behavior {B1|B2|B3|B4}`
+  - Dangerous:
+  - [x] ssh
   - [x] Others
 	- [x] memory split
 	- [x] vnc
