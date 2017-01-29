@@ -33,6 +33,7 @@ dbs_packages:
   - vim-tiny
   - dselect
   - screen
+  - dhcpcd5
 
 dbs_hostname_files:
   - /etc/exim4/update-exim4.conf
