@@ -60,7 +60,6 @@ install_git_repositories: false
 extra_packages_to_install:
   - dselect
   - screen
-  - dhcpcd5
   - git
   - git-core
   - htop
