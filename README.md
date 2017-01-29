@@ -36,17 +36,23 @@ In November 2016, there was a change made to defaults so that SSH server is not 
 > of the file don’t matter: it can contain any text you like, or even nothing
 > at all.
 
-OK. On macOS, the `/boot` partition will usually get mounted.
+OK. On macOS, the `/boot` partition will usually get mounted at `/Volumes/boot`. Touch will create an empty file if none exist at that location.
 
 ``` bash
-touch /Volumes/boot/ssh
+sudo touch /Volumes/boot/ssh
 ```
 
 Tell macOS to safely Eject. One way to do this is right-click on the "boot" volume in Finder/Desktop and use the `[Eject]` item.
 
- and installed in your Raspberry Pi(s)?
+## Connect to LAN and power up
 
-Power it up with Ethernet cable attached and connected to your LAN. Your ansible host (where you _run_ ansible) needs to be able to access the network the Pi is on in order to SSH to it.
+Now you've updated the uSD card image to enable `ssh` and inserted into your Raspberry Pi(s)?
+
+Power up Pi with Ethernet cable attached and connected to your LAN. Your ansible host (where you _run_ ansible) needs to be able to access the network the Pi is on in order to SSH to it.
+
+The first boot in `jessie` Raspbian on recent images automatically performs the expand-fs step and reboots, so there is usually no need to explicitly do it any more. Your Pi will use DHCP to get an IP address, and should appear on the network with a Zeroconf address like `raspberrypi.local`
+
+If you need troubleshoot anything, you should be able to connect a USB mouse+keyboard and HDMI monitor cable to access the console.
 
 ## Customize inventory ##
 
@@ -64,9 +70,7 @@ rpi2	ansible_host=10.0.1.52
 
 You will need the IP address that get assigned to your Pi when it is booted up. Typically this is assigned by DHCP server on your network. Your Raspberry Pi _may also_ be addressable at a Zeroconf-assigned address like `raspberrypi.local`, since this is how a fresh Raspbian boots these days. However, a non-changing IP address for your Pi-s is a basic requirement for least trouble.
 
-**RECOMMENDED**: On your network, use a router feature, sometimes called DHCP reservations or similar, to assign a DHCP IP "statically" to your Pi(s), especially if you have more than one Pi. These work by associating an Ethernet MAC address with an IP assignemtn.
-
-The ansible playbooks will work with as many Pi's as you have available, but if the IPs assigned are constantly changing, then there are going to be problems.
+**RECOMMENDED**: On your network, use a router feature, sometimes called DHCP reservations or similar, to assign a DHCP IP "statically" to your Pi(s), especially if you have more than one Pi. These work by associating an Ethernet MAC address with an IP assignment. The ansible playbooks will work with as many Pi's as you have available, but if the IPs assigned are constantly changing, then there are going to be problems.
 
 Something else to consider: set up **`~/.ssh/config`** to have the same matching hostnames and IP address as you used in your inventory file. Here's a matching example from my `~/.ssh/config` file:
 
@@ -78,7 +82,7 @@ Host rpi2
 
 ## SSH keys for password-less  ###
 
-Update SSH key config in `bootstrap-playbook.yaml` if necessary, after ensuring as SSH identity is available and/or copying identity to **`keys/`**. The SSH keys are used to configure password-less SSH access.
+Update SSH key config in `bootstrap-playbook.yaml` if necessary, after ensuring as SSH identity is available and/or copying identity to **`keys/`**. The SSH keys are used to configure password-less SSH access.  Search google for how to make an ssh identity using `ssh-keygen` if you do not already have one.
 
 **FILES**
 
@@ -97,6 +101,7 @@ Many ansible control variables for the **`raspbian_bootstrap`** role should be e
 **FILES**
 
 - `inventory/group_vars/all.yml`
+- `roles/raspbian_bootstrap/defaults/main.yml`
 - `roles/raspbian_bootstrap/vars/main.yml`
 
 ## Deploy ##
@@ -126,6 +131,11 @@ ansible-playbook -i inventory/inventory.cfg --ask-pass \
   -e "enable_apt_cacher_ng_proxy=true"  \
   bootstrap-playbook.yaml
 
+```
+
+Once you have successfully transferred your public SSH key, you should not need the `--ask-pass` option.
+
+```
 ansible-playbook -i inventory/inventory.cfg \
   -e "enable_apt_cacher_ng_proxy=true"  \
   bootstrap-playbook.yaml
@@ -156,6 +166,21 @@ ansible-playbook \
   -e "install_git_repositories=true"  \
   maintenance-playbook.yaml
 ```
+
+And deluxe IO enabling:
+
+```
+ansible-playbook \
+  -e "enable_apt_cacher_ng_proxy=true"  \
+  -e "rpicfg_disable_i2c=0"  \
+  -e "rpicfg_disable_spi=0"  \
+  -e "install_developer_tools=true"  \
+  -e "install_git_repositories=true"  \
+  maintenance-playbook.yaml
+```
+
+
+
 
 It has been tested successfully to run multiple times. So, if you need to upgrade to latest versions of packages, etc. it is there to help.
 
