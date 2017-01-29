@@ -97,6 +97,11 @@ If you'd like, you can explicitly set ansible variables on the command line too,
 
 ```
 ansible-playbook -i inventory/inventory.cfg --ask-pass \
+  -e "dbs_expand_filesystem=true" \
+  -e "enable_apt_cacher_ng_proxy=true"  \
+  bootstrap-playbook.yaml
+
+ansible-playbook -i inventory/inventory.cfg \
   -e "enable_apt_cacher_ng_proxy=true"  \
   bootstrap-playbook.yaml
 ```
