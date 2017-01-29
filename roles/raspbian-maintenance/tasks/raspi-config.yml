@@ -12,6 +12,10 @@
   command: raspi-config nonint do_vnc {{ rpicfg_disable_vnc_server }}
   when: rpicfg_disable_vnc_server is defined
 
+- name: raspi-config | SSH server
+  command: raspi-config nonint do_ssh {{ rpicfg_disable_ssh_server }}
+  when: rpicfg_disable_ssh_server is defined
+
 - name: raspi-config | Configure I2C bus support
   command: raspi-config nonint do_i2c {{ rpicfg_disable_i2c }}
   when: rpicfg_disable_i2c is defined

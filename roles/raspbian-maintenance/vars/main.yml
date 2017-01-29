@@ -14,6 +14,10 @@ rpicfg_memory_split: 16
 # Enable VNC server.  '1' for disabled or '0' for enabled
 rpicfg_disable_vnc_server: 1
 
+# Enable SSH server.  '1' for disabled or '0' for enabled
+# For almost all this situation, this should be set to enabled
+rpicfg_disable_ssh_server: 0
+
 # Boot behaviour
 #  B1 - Console - Text console, requiring user to login
 #  B2 - Console Autologin" "Text console, automatically logged in as 'pi' user
