@@ -4,9 +4,7 @@
 # raspi-config
 ########################################################################
 
-# Find your wifi country code
-# cat /usr/share/zoneinfo/iso3166.tab | tail -n +26
-rpicfg_wifi_country: US
+# See raspberrypi-wifi for wifi country code
 
 # FIXME: Allow separate config of headless vs. GUI
 rpicfg_memory_split: 16
@@ -33,12 +31,7 @@ rpicfg_disable_spi: 1
 
 ########################################################################
 
-# WIFI
-
-wifi_wpa_supplicant:
-  ssid: "Wifi SSID"
-  password: PASSWORD
-# FIXME: Add/use ansible secret
+# WIFI - See group_vars/raspberrypi-wifi in inventory
 
 # PACKAGES
 always_update_cache: false

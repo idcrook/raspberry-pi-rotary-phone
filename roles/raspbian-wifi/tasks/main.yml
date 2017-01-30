@@ -1,0 +1,21 @@
+---
+- name: Wi-Fi | Configure wpa_supplicant
+  template:
+    src:   etc/wpa_supplicant/wpa_supplicant.conf.j2
+    dest: /etc/wpa_supplicant/wpa_supplicant.conf
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - restart networking
+  tags: [ raspi_wifi ]
+
+# should also be handled by above
+- name: Wi-Fi | Update wifi country code
+  command: raspi-config nonint do_wifi_country {{ raspi_wifi_country_code }}
+  when: raspi_wifi_country_code is defined
+  tags: [ raspi_wifi ]
+
+- name: Start networking service
+  service: name=networking state=started enabled=yes
+  tags: [ raspi_wifi, service ]

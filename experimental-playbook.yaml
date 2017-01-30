@@ -1,9 +1,9 @@
 ---
 
-- name: Ansible Playbook for maintaining bootstrapped Raspberry Pi
+- name: Experimental testing
 
-  hosts: raspberrypi-nodes
+  hosts: raspberrypi-wifi
   roles:
-    - experimental-raspbian-maintenance
-  remote_user: pi
+    - raspbian-wifi
+  remote_user: "{{ ansible_user }}"
   become: yes

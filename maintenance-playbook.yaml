@@ -1,9 +1,14 @@
 ---
+# Ansible Playbook for maintaining bootstrapped Raspberry Pi
 
-- name: Ansible Playbook for maintaining bootstrapped Raspberry Pi
-
-  hosts: raspberrypi-nodes
+- hosts: raspberrypi-nodes
   roles:
     - raspbian-maintenance
-  remote_user: pi
+  remote_user: "{{ ansible_user }}"
+  become: yes
+
+- hosts: raspberrypi-wifi
+  roles:
+    - raspbian-wifi
+  remote_user: "{{ ansible_user }}"
   become: yes

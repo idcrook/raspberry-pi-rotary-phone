@@ -162,6 +162,45 @@ ansible-playbook -i inventory/inventory.cfg \
   bootstrap-playbook.yaml
 ```
 
+## Optional: Wi-Fi
+
+You can configure wifi. You will need to update some configuration files to point to your network and use an ansible vault. After having done these steps, when you run the **maintenance playbook** (described below), it will also configure your wi-fi network for the designated hosts.
+
+
+### Add wifi hosts to inventory
+
+First add nodes you want to have wifi to your `inventory.cfg` file, in the `[raspberrypi-wifi]` section. Note they will be in this section in _addition_ to one of the headless/GUI sections.
+
+### Point `ansible.cfg` to vault password file
+
+Uncomment this line
+
+``` ini
+#vault_password_file = ~/.ansible_vault_password.txt
+```
+
+### Use vault file for Wi-Fi network and password
+
+The file checked into the repository has a default vault password of `raspberry`. You'll want to update the vault password as well as the files it protects.
+
+The steps in the following example will set the vault password to this default value, and open editor (likely `vi`) on decrypted version of file to allow edits, then re-encrypt file when you have made your edits and exited.
+
+``` bash
+echo "raspberry" > ~/.ansible_vault_password.txt
+ansible-vault edit    inventory/group_vars/raspberrypi-wifi/vault.yml \
+  --vault-password-file ~/.ansible_vault_password.txt
+```
+
+There are other modes to use `ansible-vault` for manipulating vault files.
+
+```
+ansible-vault decrypt inventory/group_vars/raspberrypi-wifi/vault.yml \
+  --vault-password-file ~/.ansible_vault_password.txt
+
+ansible-vault encrypt inventory/group_vars/raspberrypi-wifi/vault.yml \
+  --vault-password-file ~/.ansible_vault_password.txt
+```
+
 ## Maintenance
 
 Once the bootstrap playbook is run successfully for a target host, you shouldn't need to run it again in the future. (unless you edit the ansible files, of course!)
@@ -205,10 +244,11 @@ ansible-playbook \
 
 It has been tested successfully to run multiple times. So, if you need to upgrade to latest versions of packages, etc. it is there to help.
 
+
 # Credits #
 
 
-Borrowed parts from
+Borrowed parts or ideas from
 
 - https://galaxy.ansible.com/geerlingguy/raspberry-pi/ - Configures a Raspberry Pi.
   - https://github.com/geerlingguy/ansible-role-raspberry-pi (License: BSD, MIT)
@@ -217,12 +257,13 @@ Borrowed parts from
   - http://www.hietala.org/automating-raspberry-pi-setup-with-ansible.html
   - `roles/raspbian_bootstrap` and its subdirs under GPLv2 LICENSE
 
+- https://github.com/thomo/ansible-raspi_wifi - Raspberry Pi Wi-Fi role
+
 # TODO #
 
 Add ansible tags such as `maintenance`.
 
 - System config
-- [ ] wi-fi config
 - [ ] GUI mode support vs. "headless"
 - Servers
   - [ ] shairport-sync
@@ -239,6 +280,7 @@ Add ansible tags such as `maintenance`.
 ## DONE ##
 
 - System config
+- [x] wi-fi config
 - [x] Assert systemd (systemctl, etc. assume Raspbian jessie)
   - Update user login information
   - [x] Change password from default

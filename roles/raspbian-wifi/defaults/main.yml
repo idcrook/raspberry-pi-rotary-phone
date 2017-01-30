@@ -1,0 +1,21 @@
+---
+
+# See wifi network/password in inventory/group_vars/raspberrypi-wifi/
+# Protected by ansible vault
+
+# Key management type can be: WPA-PSK or WPA-EAP (Pre-Shared or Enterprise)
+raspi_wifi_key_mgmt: WPA-PSK
+
+# Protocol type can be: WPA2 (alias for RSN) and WPA (for WPA1)
+raspi_wifi_proto: WPA2
+
+# Pairwise can be CCMP or TKIP (for WPA2 or WPA1)
+raspi_wifi_pairwise: CCMP
+
+# Authorization option should be OPEN for both WPA1/WPA2 (in less commonly used are SHARED and LEAP)
+raspi_wifi_auth_alg: OPEN
+
+# Regulatory region code
+# Find wifi country code: cat /usr/share/zoneinfo/iso3166.tab | tail -n +26
+raspi_wifi_country_code: US
+#raspi_wifi_country_code: GB
