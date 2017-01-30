@@ -1,13 +1,13 @@
 # -*- conf-space -*-
 
-# list nodes here that you only want to log into typically over network, and
+# list nodes here that you only want to login to typically over network, and
 # never using the GUI
 [raspberrypi-headless]
 #rpi1	ansible_host=10.0.1.2
 rpi1	ansible_host=raspberrypi.local
 hypi2	ansible_host=black-pearl.local ansible_user=pirate
 
-# list nodes here that you to log into using GUI
+# list nodes here that you to login to using GUI
 [raspberrypi-gui]
 
 [raspberrypi-nodes:children]

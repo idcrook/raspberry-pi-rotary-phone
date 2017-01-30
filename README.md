@@ -16,17 +16,17 @@ For further status, see TODO / DONE sections below for features desired, planned
 
 ## Assumptions
 
+ - git clone of this repository!
  - ansible installed, control machine platform: _macOS_
-   - may work on Linux, etc. but haven't tested
- - Raspbian SD card image flashed onto an SD card
-   - SSH enabled?
+   - may work from Linux control machine, but hasn't been tested
+ - Raspbian `jessie` SD card image flashed onto an SD/µSD card
+   - SSH server enabled on Pi (see following)
 
-
-## Enable SSH on image
+### Enable SSH on image
 
 So you've flashed a Raspbian-compatible image to an SD card?
 
-In November 2016, there was a change made to defaults so that SSH server is not enabled by default. This will cause problems with "headless" installs on first-boot.
+In November 2016, there was a change made to defaults so that SSH server is not enabled by default. This would cause problems with "headless" installs via ansible on first-boot. Fortunately there is a simple way available to override.
 
  https://www.raspberrypi.org/blog/a-security-update-for-raspbian-pixel/
 
@@ -36,27 +36,38 @@ In November 2016, there was a change made to defaults so that SSH server is not 
 > of the file don’t matter: it can contain any text you like, or even nothing
 > at all.
 
-OK. On macOS, the `/boot` partition will usually get mounted at `/Volumes/boot`. Touch will create an empty file if none exist at that location.
+We will be changing the password from the default soon in our ansible bootstrap role, so it will be OK enable the SSH server.
+
+OK. On macOS, the SD card in its reader will usually automount the image's `/boot` partition at `/Volumes/boot`. `touch` will create an empty file if none exist at that location (`sudo` is not necessary in this example, but shouldn't hurt).
 
 ``` bash
 sudo touch /Volumes/boot/ssh
 ```
 
-Tell macOS to safely Eject. One way to do this is right-click on the "boot" volume in Finder/Desktop and use the `[Eject]` item.
+Tell macOS to safely Eject the SD card once you have written the `/boot/ssh` file, to make sure it gets written to the card. One way to do this is right-click on the "boot" volume in Finder/Desktop and use the `[Eject]` item.
 
 ## Connect to LAN and power up
 
-Now you've updated the uSD card image to enable `ssh` and inserted into your Raspberry Pi(s)?
+Now you've updated the µSD card image to enable `ssh` server and inserted into your Raspberry Pi(s)?
 
-Power up Pi with Ethernet cable attached and connected to your LAN. Your ansible host (where you _run_ ansible) needs to be able to access the network the Pi is on in order to SSH to it.
+Power up Pi with Ethernet cable attached and connected to your LAN. Your ansible control machine (where you _run_ ansible) needs to be able to access the network the Pi is on in order to SSH to it.
 
-The first boot in `jessie` Raspbian on recent images automatically performs the expand-fs step and reboots, so there is usually no need to explicitly do it any more. Your Pi will use DHCP to get an IP address, and should appear on the network with a Zeroconf address like `raspberrypi.local`
+The first boot in `jessie` Raspbian in recent image updates automatically performs the expand-fs step and reboots, so there is usually no need to explicitly do it any more. Your Pi will use attempt DHCP to get an IP address and should appear on the network with a Zeroconf address like `raspberrypi.local`. If that works, you should be able to reveal IP address with something like:
 
-If you need troubleshoot anything, you should be able to connect a USB mouse+keyboard and HDMI monitor cable to access the console.
+``` bash
+$ ping raspberrypi.local
+PING raspberrypi.local (10.0.1.87): 56 data bytes
+64 bytes from 10.0.1.87: icmp_seq=0 ttl=64 time=0.859 ms
+64 bytes from 10.0.1.87: icmp_seq=1 ttl=64 time=0.796 ms
+```
+
+The IP address (`10.0.1.87` in the example) is needed for your ansible `inventory`, described below.
+
+If you need to troubleshoot anything, you should be able to connect a USB mouse+keyboard and HDMI monitor cable to access the console.
 
 ## Customize inventory ##
 
-Copy example inventory file to your own (that will be edited).
+Copy example inventory file to your own, as in example following. Edit this new copy to customize.
 
 ```
 cp inventory/inventory.cfg.example inventory/inventory.cfg
@@ -65,6 +76,7 @@ cp inventory/inventory.cfg.example inventory/inventory.cfg
 In the inventory file, the `ansible_host` IP must be SSH-able from the computer you are running ansible on. The inventory name (`rpi2` in example below) will be assigned on the Pi as its hostname when you run the playbook.
 
 ```
+[raspberrypi-headless]
 rpi2	ansible_host=10.0.1.52
 ```
 
@@ -92,6 +104,16 @@ Update SSH key config in `bootstrap-playbook.yaml` if necessary, after ensuring 
 #dbs_ssh_pubkey: "{{ lookup('file', 'keys/id_rsa.pub') }}"
 dbs_ssh_pubkey: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 ```
+
+### `ssh-copy-id`
+
+`ssh-copy-id` available as macOS [Homebrew](http://brew.sh) package is another useful tool. If you have SSH identities it can be used to copy them to another host (host: `raspberrypi.local` in following example):
+
+``` bash
+ssh-copy-id -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null pi@raspberrypi.local
+```
+
+This is how I recommend to get your keys to the target host (_before_ running ansible), as ansible will sometimes get confused when you change the password out from under it, and error out.  the `--ask-pass` option below can be skipped if you can already "password-less" SSH to target Pi using ssh keys.
 
 
 ## Customize other config variables  ###
@@ -127,13 +149,12 @@ If you'd like, you can explicitly set ansible variables on the command line too,
 
 ```
 ansible-playbook -i inventory/inventory.cfg --ask-pass \
-  -e "dbs_expand_filesystem=true" \
   -e "enable_apt_cacher_ng_proxy=true"  \
   bootstrap-playbook.yaml
 
 ```
 
-Once you have successfully transferred your public SSH key, you should not need the `--ask-pass` option.
+Explained above, recent images of Raspbian `jessie` automatically perform the filesystem expansion on first boot, so you shouldn't need `-e "dbs_expand_filesystem=true"`. Once you have successfully transferred your public SSH key (bootstrap-playbook does this), the `--ask-pass` option in later invocations is not required.
 
 ```
 ansible-playbook -i inventory/inventory.cfg \
