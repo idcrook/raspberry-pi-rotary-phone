@@ -26,9 +26,13 @@
 #   with_items: "{{ npm_iot_cloud_packages_to_install }}"
 #   when: install_npm_iot_cloud_packages
 
+- name: Developer | Make directory for git repositories
+  file: path={{ git_repositories_basedir }} state=directory
+  when: install_git_repositories
+  become: no
+
 - name: Developer | Install git packages
   git: repo={{ item.repo }} dest={{ item.dest }}
   with_items: "{{ git_repositories_to_clone }}"
-  become: yes
-  become_user: "{{ ansible_user }}"
+  become: no
   when: install_git_repositories

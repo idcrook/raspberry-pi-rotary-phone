@@ -90,13 +90,15 @@ npm_packages_to_install: [ mqtt, crypto-js, minimist, websocket-stream ]
 
 npm_iot_cloud_packages_to_install: [ aws-iot-device-sdk ]
 
+git_repositories_basedir: /home/pi/projects
+
 git_repositories_to_clone:
   - name: Iot Demo
     repo: https://github.com/idcrook/rpi-iot-demo-2017.git
-    dest: /home/pi/iot-demo
+    dest: "{{ git_repositories_basedir }}/iot-demo"
   - name: RGB slider
     repo: https://github.com/idcrook/rgb-slider.git
-    dest: /home/pi/rgb-slider
+    dest: "{{ git_repositories_basedir }}/rgb-slider"
   - name: Pi Blaster
     repo: https://github.com/sarfata/pi-blaster.git
-    dest: /home/pi/pi-blaster
+    dest: "{{ git_repositories_basedir }}/pi-blaster"
