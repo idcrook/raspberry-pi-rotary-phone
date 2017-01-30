@@ -16,6 +16,17 @@
   when: raspi_wifi_country_code is defined
   tags: [ raspi_wifi ]
 
-- name: Start networking service
+- name: Wi-Fi | Start networking service
   service: name=networking state=started enabled=yes
   tags: [ raspi_wifi, service ]
+
+- name: Wi-Fi | Reboot
+  command: /sbin/shutdown -r +0 'Ansible Reboot triggered'
+  async: 0
+  poll: 0
+  ignore_errors: true
+  become: true
+
+- name: Wi-Fi | Wait for Raspberry PI to come back
+  local_action: wait_for host={{ ansible_host }} state=started port=22 delay=50 timeout=120
+  become: false
