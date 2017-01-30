@@ -1,0 +1,6 @@
+---
+# 'Wi-Fi Network' name
+vault_raspi_wifi_ssid: "Wi-Fi Network"
+
+# 'Wi-Fi Network' password
+vault_raspi_wifi_psk: "Wi-Fi PASSW0RD"
