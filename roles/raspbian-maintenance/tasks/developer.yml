@@ -7,6 +7,11 @@
   with_items: "{{ developer_packages_to_install }}"
   when: install_developer_packages is defined and install_developer_packages
 
+- name: Developer | Install python developer packages
+  apt: pkg={{ item }} state=installed update_cache={{ always_update_cache }} cache_valid_time=3600
+  with_items: "{{ python_developer_packages_to_install }}"
+  when: install_python_developer_packages is defined and install_python_developer_packages
+
 - name: Developer | Install python modules
   pip: name={{ item }}
   with_items: "{{ pip_packages_to_install }}"
