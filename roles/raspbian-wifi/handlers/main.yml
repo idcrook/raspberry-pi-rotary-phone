@@ -1,5 +1,4 @@
 ---
 - name: restart networking
-  debug:
-    var: hostvars[inventory_hostname]
+  debug: var=hostvars[inventory_hostname]
 #  service: name=networking state=restarted
