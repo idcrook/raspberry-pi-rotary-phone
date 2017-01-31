@@ -261,15 +261,25 @@ Borrowed parts or ideas from
 
 # TODO #
 
-Add ansible tags such as `maintenance`.
+Add ansible tags such as `maintenance`, `wifi`.
 
 - System config
 - [ ] GUI mode support vs. "headless"
-- Servers
-  - [ ] shairport-sync
-- Package management
-   - [ ] k8s, docker
-   - [ ] IoT related (GPIO, node pkgs, python pkgs, IoT/cloud frameworks)
+- [ ]
+- Servers / Developer
+- [ ] MQTT server for IoT
+  - [ ] IoT related (node pkgs, python pkgs, IoT/cloud frameworks)
+- [ ] python virtualenv
+- [ ] shairport-sync
+- [ ] swiftlang http://swift-lite.org/installation/
+- [ ] golang
+- [ ] xrdp (remote desktop)
+- [ ] csharp (mono)
+- [ ] k8s, docker
+
+
+## TODO - Low priority
+
 - `raspi-config`
   - Others
   - [ ] overscan
