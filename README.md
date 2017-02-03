@@ -2,13 +2,30 @@
 
 Ansible roles for Raspberry Pi deployment, configuration, and maintenance
 
-
 <!-- toc -->
 
-
+- [STATUS](#status)
+- [GETTING STARTED](#getting-started)
+  * [Assumptions](#assumptions)
+    + [Enable SSH on image](#enable-ssh-on-image)
+  * [Connect to LAN and power up](#connect-to-lan-and-power-up)
+  * [Customize inventory](#customize-inventory)
+  * [SSH keys for password-less](#ssh-keys-for-password-less)
+    + [`ssh-copy-id` - to copy to hosts in advance](#ssh-copy-id---to-copy-to-hosts-in-advance)
+  * [Customize other config variables](#customize-other-config-variables)
+  * [Deploy!](#deploy)
+  * [Optional: Wi-Fi](#optional-wi-fi)
+    + [Add wifi hosts to inventory](#add-wifi-hosts-to-inventory)
+    + [Point `ansible.cfg` to vault password file](#point-ansiblecfg-to-vault-password-file)
+    + [Use vault file for Wi-Fi network and password](#use-vault-file-for-wi-fi-network-and-password)
+  * [Maintenance](#maintenance)
+- [LICENSE](#license)
+- [CREDITS](#credits)
+- [TODO](#todo)
+  * [TODO - Low priority](#todo---low-priority)
+- [DONE](#done)
 
 <!-- tocstop -->
-
 
 # STATUS
 
