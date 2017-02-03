@@ -77,10 +77,10 @@ In the inventory file, the `ansible_host` IP must be SSH-able from the computer 
 
 ```
 [raspberrypi-headless]
-rpi2	ansible_host=10.0.1.52
+rpi2	ansible_host=10.0.1.87
 ```
 
-You will need the IP address that get assigned to your Pi when it is booted up. Typically this is assigned by DHCP server on your network. Your Raspberry Pi _may also_ be addressable at a Zeroconf-assigned address like `raspberrypi.local`, since this is how a fresh Raspbian boots these days. However, a non-changing IP address for your Pi-s is a basic requirement for least trouble.
+You will need the IP address that get assigned to your Pi when it is booted up. Typically this is assigned by DHCP server on your network. Your Raspberry Pi _may also_ be addressable at a Zeroconf-assigned address like `raspberrypi.local`, since this is how a fresh Raspbian boots these days. However, a non-changing IP address for your Pi-s is a basic requirement for least trouble with ansible.
 
 **RECOMMENDED**: On your network, use a router feature, sometimes called DHCP reservations or similar, to assign a DHCP IP "statically" to your Pi(s), especially if you have more than one Pi. These work by associating an Ethernet MAC address with an IP assignment. The ansible playbooks will work with as many Pi's as you have available, but if the IPs assigned are constantly changing, then there are going to be problems.
 
@@ -88,7 +88,7 @@ Something else to consider: set up **`~/.ssh/config`** to have the same matching
 
 ``` ini
 Host rpi2
-  HostName 10.0.1.52
+  HostName 10.0.1.87
   User pi
 ```
 
@@ -265,7 +265,7 @@ Add ansible tags such as `maintenance`, `wifi`.
 
 - System config
 - [ ] GUI mode support vs. "headless"
-- [ ]
+- [ ] Determine generation (Pi 0, B, B+, 2, 3, etc.)
 - Servers / Developer
 - [ ] MQTT server for IoT
   - [ ] IoT related (node pkgs, python pkgs, IoT/cloud frameworks)
