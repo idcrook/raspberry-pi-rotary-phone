@@ -21,6 +21,7 @@ For further status, see TODO / DONE sections below for features desired, planned
    - may work from Linux control machine, but hasn't been tested
  - Raspbian `jessie` SD card image flashed onto an SD/µSD card
    - SSH server enabled on Pi (see following)
+ - wired Ethernet network with DHCP
 
 ### Enable SSH on image
 
@@ -44,7 +45,13 @@ OK. On macOS, the SD card in its reader will usually automount the image's `/boo
 sudo touch /Volumes/boot/ssh
 ```
 
-Tell macOS to safely Eject the SD card once you have written the `/boot/ssh` file, to make sure it gets written to the card. One way to do this is right-click on the "boot" volume in Finder/Desktop and use the `[Eject]` item.
+Tell macOS to safely Eject the SD card once you have written the `/boot/ssh` file, to make sure it gets written to the card. One way to do this is right-click on the "boot" volume in Finder/Desktop and use the `[Eject]` item. Another way is (assuming it's where the `/boot` partition on SD card was mounted):
+
+``` bash
+diskutil eject /Volumes/boot
+```
+
+
 
 ## Connect to LAN and power up
 
@@ -52,7 +59,7 @@ Now you've updated the µSD card image to enable `ssh` server and inserted into 
 
 Power up Pi with Ethernet cable attached and connected to your LAN. Your ansible control machine (where you _run_ ansible) needs to be able to access the network the Pi is on in order to SSH to it.
 
-The first boot in `jessie` Raspbian in recent image updates automatically performs the expand-fs step and reboots, so there is usually no need to explicitly do it any more. Your Pi will use attempt DHCP to get an IP address and should appear on the network with a Zeroconf address like `raspberrypi.local`. If that works, you should be able to reveal IP address with something like:
+The first boot in `jessie` Raspbian in recent image updates automatically performs the expand-fs step and reboots, so there is usually no need to explicitly do it any more. Your Pi will attempt to use DHCP to get an IP address. It should also appear on network with a Zeroconf address like `raspberrypi.local`. If that works, you should be able to reveal IP address with something like:
 
 ``` bash
 $ ping raspberrypi.local
@@ -67,22 +74,22 @@ If you need to troubleshoot anything, you should be able to connect a USB mouse+
 
 ## Customize inventory ##
 
-Copy example inventory file to your own, as in example following. Edit this new copy to customize.
+Copy example `inventory.cfg` file to your own:
 
 ```
 cp inventory/inventory.cfg.example inventory/inventory.cfg
 ```
 
-In the inventory file, the `ansible_host` IP must be SSH-able from the computer you are running ansible on. The inventory name (`rpi2` in example below) will be assigned on the Pi as its hostname when you run the playbook.
+ Edit this new copy to customize. In the inventory file, the `ansible_host` IP must be SSH-able from the computer you are running ansible on. The inventory name (`rpi2` in example below) will be assigned on the Pi as its hostname when you run the playbook.
 
 ```
 [raspberrypi-headless]
 rpi2	ansible_host=10.0.1.87
 ```
 
-You will need the IP address that get assigned to your Pi when it is booted up. Typically this is assigned by DHCP server on your network. Your Raspberry Pi _may also_ be addressable at a Zeroconf-assigned address like `raspberrypi.local`, since this is how a fresh Raspbian boots these days. However, a non-changing IP address for your Pi-s is a basic requirement for least trouble with ansible.
+You will need the IP address that get assigned to your Pi when it is booted up. Typically this is assigned by DHCP server on your network. Your Raspberry Pi _may also_ be addressable at a Zeroconf-assigned address like `raspberrypi.local`, since this is how a fresh Raspbian install image boots. However, a non-changing IP address for your Pi-s is a basic requirement for least trouble with ansible.
 
-**RECOMMENDED**: On your network, use a router feature, sometimes called DHCP reservations or similar, to assign a DHCP IP "statically" to your Pi(s), especially if you have more than one Pi. These work by associating an Ethernet MAC address with an IP assignment. The ansible playbooks will work with as many Pi's as you have available, but if the IPs assigned are constantly changing, then there are going to be problems.
+**RECOMMENDED**: On your network, use a router feature, sometimes called DHCP reservations or similar, to assign a DHCP IP "statically" to your Pi(s), especially if you have more than one Pi. These work by associating an Ethernet MAC address with an IP assignment. The ansible playbooks will work with as many Pi's as you have available, but if their IP addresses assigned are constantly changing, then there are going to be problems.
 
 Something else to consider: set up **`~/.ssh/config`** to have the same matching hostnames and IP address as you used in your inventory file. Here's a matching example from my `~/.ssh/config` file:
 
@@ -92,9 +99,11 @@ Host rpi2
   User pi
 ```
 
+That way a command like `ssh rpi2` will connect to the Pi.
+
 ## SSH keys for password-less  ###
 
-Update SSH key config in `bootstrap-playbook.yaml` if necessary, after ensuring as SSH identity is available and/or copying identity to **`keys/`**. The SSH keys are used to configure password-less SSH access.  Search google for how to make an ssh identity using `ssh-keygen` if you do not already have one.
+Update SSH key config in `bootstrap-playbook.yaml` if necessary. First, will need to ensure an SSH identity is available. And identity may be  copied to **`keys/`** subdirectory and pointed to for ansible. The SSH keys are used to configure password-less SSH access.  Search google for how to make an ssh identity using `ssh-keygen` if you do not already have one. The default location of `~/.ssh/id_rsa` is also the default in the ansible config.
 
 **FILES**
 
@@ -105,9 +114,9 @@ Update SSH key config in `bootstrap-playbook.yaml` if necessary, after ensuring 
 dbs_ssh_pubkey: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 ```
 
-### `ssh-copy-id`
+### `ssh-copy-id` - to copy to hosts in advance
 
-`ssh-copy-id` available as macOS [Homebrew](http://brew.sh) package is another useful tool. If you have SSH identities it can be used to copy them to another host (host: `raspberrypi.local` in following example):
+`ssh-copy-id` available as macOS [Homebrew](http://brew.sh) package is another useful tool. If you have SSH identities it can be used to copy them to another host (host: `raspberrypi.local` in following example). You will need to provide ssh login password:
 
 ``` bash
 ssh-copy-id -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null pi@raspberrypi.local
@@ -125,6 +134,8 @@ Many ansible control variables for the **`raspbian_bootstrap`** role should be e
 - `inventory/group_vars/all.yml`
 - `roles/raspbian_bootstrap/defaults/main.yml`
 - `roles/raspbian_bootstrap/vars/main.yml`
+
+Take a look to customize defaults, update values for your environment, and other tweaks.
 
 ## Deploy ##
 
