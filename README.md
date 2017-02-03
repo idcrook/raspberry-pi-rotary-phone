@@ -3,7 +3,14 @@
 Ansible roles for Raspberry Pi deployment, configuration, and maintenance
 
 
-## STATUS
+<!-- toc -->
+
+
+
+<!-- tocstop -->
+
+
+# STATUS
 
 Works amazingly well! In use for normalizing Raspbian-flavored Pis on Home LAN.
 
@@ -11,8 +18,7 @@ Developer configuration role (currently found in the _maintenance_ playbook/role
 
 For further status, see TODO / DONE sections below for features desired, planned or completed.
 
-
-# Getting started #
+# GETTING STARTED #
 
 ## Assumptions
 
@@ -137,7 +143,7 @@ Many ansible control variables for the **`raspbian_bootstrap`** role should be e
 
 Take a look to customize defaults, update values for your environment, and other tweaks.
 
-## Deploy ##
+## Deploy!
 
 So you have your inventory up-to-date and have pointed to an SSH identity and customized and localized all the config variables? Run the playbook!
 
@@ -255,8 +261,11 @@ ansible-playbook \
 
 It has been tested successfully to run multiple times. So, if you need to upgrade to latest versions of packages, etc. it is there to help.
 
+# LICENSE #
 
-# Credits #
+MIT
+
+# CREDITS #
 
 
 Borrowed parts or ideas from
@@ -298,7 +307,7 @@ Add ansible tags such as `maintenance`, `wifi`.
   - [ ] overclock
   - [ ] serial
 
-## DONE ##
+# DONE #
 
 - System config
 - [x] wi-fi config
