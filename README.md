@@ -42,7 +42,7 @@ For further status, see TODO / DONE sections below for features desired, planned
  - git clone of this repository!
  - ansible installed, control machine platform: _macOS_
    - may work from Linux control machine, but hasn't been tested
- - Raspbian `jessie` SD card image flashed onto an SD/µSD card
+ - Raspbian `stretch` SD card image flashed onto an SD/µSD card
    - SSH server enabled on Pi (see following)
  - wired Ethernet network with DHCP
 
@@ -82,7 +82,7 @@ Now you've updated the µSD card image to enable `ssh` server and inserted into 
 
 Power up Pi with Ethernet cable attached and connected to your LAN. Your ansible control machine (where you _run_ ansible) needs to be able to access the network the Pi is on in order to SSH to it.
 
-The first boot in `jessie` Raspbian in recent image updates automatically performs the expand-fs step and reboots, so there is usually no need to explicitly do it any more. Your Pi will attempt to use DHCP to get an IP address. It should also appear on network with a Zeroconf address like `raspberrypi.local`. If that works, you should be able to reveal IP address with something like:
+The first boot in `stretch` Raspbian in recent image updates automatically performs the expand-fs step and reboots, so there is usually no need to explicitly do it any more. Your Pi will attempt to use DHCP to get an IP address. It should also appear on network with a Zeroconf address like `raspberrypi.local`. If that works, you should be able to reveal IP address with something like:
 
 ``` bash
 $ ping raspberrypi.local
@@ -188,7 +188,7 @@ ansible-playbook -i inventory/inventory.cfg --ask-pass \
 
 ```
 
-Explained above, recent images of Raspbian `jessie` automatically perform the filesystem expansion on first boot, so you shouldn't need `-e "dbs_expand_filesystem=true"`. Once you have successfully transferred your public SSH key (bootstrap-playbook does this), the `--ask-pass` option in later invocations is not required.
+Explained above, recent images of Raspbian `stretch` automatically perform the filesystem expansion on first boot, so you shouldn't need `-e "dbs_expand_filesystem=true"`. Once you have successfully transferred your public SSH key (bootstrap-playbook does this), the `--ask-pass` option in later invocations is not required.
 
 ```
 ansible-playbook -i inventory/inventory.cfg \
@@ -328,7 +328,7 @@ Add ansible tags such as `maintenance`, `wifi`.
 
 - System config
 - [x] wi-fi config
-- [x] Assert systemd (systemctl, etc. assume Raspbian jessie)
+- [x] Assert systemd (systemctl, etc. assume Raspbian stretch)
   - Update user login information
   - [x] Change password from default
   - [x] groups (serial, e.g.)

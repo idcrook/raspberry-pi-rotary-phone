@@ -8,7 +8,7 @@ galaxy_info:
   platforms:
   - name: Debian
     versions:
-    - jessie
+    - stretch
   galaxy_tags:
   - networking
   - packaging
