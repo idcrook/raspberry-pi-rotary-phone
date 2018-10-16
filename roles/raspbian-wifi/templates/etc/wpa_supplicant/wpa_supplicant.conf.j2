@@ -3,8 +3,23 @@ ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 
 network={
+    ssid="raspi-demo"
+    psk="raspberry"
+    priority=3
+    key_mgmt=WPA-PSK
+}
+
+network={
+    ssid="NetGuestNet"
+    psk="beerguest"
+    priority=2
+    key_mgmt=WPA-PSK
+}
+
+network={
 	ssid="{{ raspi_wifi_ssid }}"
 	psk="{{ raspi_wifi_psk }}"
+    priority=1
 	key_mgmt={{ raspi_wifi_key_mgmt }}
 
 # NOTE: following are commented out in template output, as majority of users won't need them
