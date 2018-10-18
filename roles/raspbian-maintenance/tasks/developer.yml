@@ -3,14 +3,20 @@
 # Handy way to montior progress on remote machine:
 #   sudo less  /var/log/apt/term.log
 - name: Developer | Install developer packages
-  apt: pkg={{ item }} state=installed update_cache={{ always_update_cache }} cache_valid_time=3600
-  with_items: "{{ developer_packages_to_install }}"
-  when: install_developer_packages is defined and install_developer_packages
+  apt: >
+    pkg="{{ developer_packages_to_install }}" state=present
+    update_cache={{ always_update_cache }} cache_valid_time=3600
+  when: >
+    install_developer_packages is defined
+    and install_developer_packages
 
 - name: Developer | Install python developer packages
-  apt: pkg={{ item }} state=installed update_cache={{ always_update_cache }} cache_valid_time=3600
-  with_items: "{{ python_developer_packages_to_install }}"
-  when: install_python_developer_packages is defined and install_python_developer_packages
+  apt: >
+    pkg="{{ python_developer_packages_to_install }}" state=present
+    update_cache={{ always_update_cache }} cache_valid_time=3600
+  when: >
+    install_python_developer_packages is defined
+    and install_python_developer_packages
 
 - name: Developer | Install python modules
   pip: name={{ item }}
@@ -34,10 +40,10 @@
 - name: Developer | Make directory for git repositories
   file: path={{ git_repositories_basedir }} state=directory
   when: install_git_repositories
-  become: no
+  become: false
 
 - name: Developer | Install git packages
   git: repo={{ item.repo }} dest={{ item.dest }}
   with_items: "{{ git_repositories_to_clone }}"
-  become: no
+  become: false
   when: install_git_repositories
