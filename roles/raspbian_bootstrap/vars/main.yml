@@ -35,10 +35,10 @@ dbs_packages:
   - screen
 
 dbs_hostname_files:
-  - /etc/exim4/update-exim4.conf
-  - /etc/printcap
   - /etc/hostname
   - /etc/hosts
   - /etc/ssh/ssh_host_rsa_key.pub
   - /etc/ssh/ssh_host_dsa_key.pub
   - /etc/motd
+  # - /etc/exim4/update-exim4.conf
+  # - /etc/printcap
