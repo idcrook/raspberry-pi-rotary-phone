@@ -5,10 +5,10 @@
   roles:
     - raspbian-maintenance
   remote_user: "{{ ansible_user }}"
-  become: yes
+  become: true
 
 - hosts: raspberrypi-wifi
   roles:
     - raspbian-wifi
   remote_user: "{{ ansible_user }}"
-  become: yes
+  become: true
