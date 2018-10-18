@@ -1,10 +1,12 @@
 ---
+
 - name: Package maintenance | Update APT package cache
   action: apt update_cache=yes cache_valid_time=3600
 
 - name: Package maintenance | Install "extra" packages
-  apt: pkg={{ item }} state=installed update_cache={{ always_update_cache }}
-  with_items: "{{ extra_packages_to_install }}"
+  apt: >
+    pkg="{{ extra_packages_to_install }}" state=present
+    update_cache={{ always_update_cache }}
   when: install_extra_packages
 
 - name: Package maintenance | Upgrade to latest packages
