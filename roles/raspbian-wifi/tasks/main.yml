@@ -8,17 +8,11 @@
     mode: 0600
   notify:
     - restart networking
-  tags: [ raspi_wifi ]
-
-# should also be handled by above
-- name: Wi-Fi | Update wifi country code
-  command: raspi-config nonint do_wifi_country {{ raspi_wifi_country_code }}
-  when: raspi_wifi_country_code is defined
-  tags: [ raspi_wifi ]
+  tags: [raspi_wifi]
 
 - name: Wi-Fi | Start networking service
   service: name=networking state=started enabled=yes
-  tags: [ raspi_wifi, service ]
+  tags: [raspi_wifi, service]
 
 - name: Wi-Fi | Reboot
   command: /sbin/shutdown -r +0 'Ansible Reboot triggered'
@@ -28,7 +22,8 @@
   become: true
 
 - name: Wi-Fi | Wait for Raspberry PI to come back
-  local_action: wait_for host={{ ansible_host }} state=started port=22 delay=50 timeout=120
+  local_action: >
+    wait_for host={{ ansible_host }} state=started port=22 delay=50 timeout=120
   become: false
 
 - name: Wi-Fi | Get IP address
@@ -42,4 +37,4 @@
     msg: 'wi-fi configured'
     voice: Alex
   delegate_to: localhost
-  become: no
+  become: false
