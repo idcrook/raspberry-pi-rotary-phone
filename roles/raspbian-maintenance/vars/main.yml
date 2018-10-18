@@ -86,8 +86,8 @@ python_developer_packages_to_install:
   - python3-setuptools
   - python3-setuptools-git
 
-#pip_packages_to_install: [ awscli ]
-pip_packages_to_install: [ ]
+# pip_packages_to_install: [ awscli ]
+pip_packages_to_install: []
 
 nvm_versions:
   nvm: v0.33.8
@@ -95,10 +95,14 @@ nvm_versions:
   node_version: v9.3.0
   nvm_user: '{{ ansible_user }}'
 
-npm_packages_to_install: [ mqtt, crypto-js, minimist, websocket-stream ]
+npm_packages_to_install:
+  - mqtt
+  - crypto-js
+  - minimist
+  - websocket-stream
 
-#npm_iot_cloud_packages_to_install: [ aws-iot-device-sdk ]
-npm_iot_cloud_packages_to_install: [ ]
+# npm_iot_cloud_packages_to_install: [ aws-iot-device-sdk ]
+npm_iot_cloud_packages_to_install: []
 
 git_repositories_basedir: /home/pi/projects
 
